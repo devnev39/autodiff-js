@@ -1,0 +1,6 @@
+Dynamic radius of node drawing 
+
+EDIT node
+1. Edit node operation
+2. Edit node operation nodes
+3. Edit node operation type -> single valued or double valued 

@@ -1,0 +1,149 @@
+:root{
+    --height : 650px;
+    --width : 1000px;
+}
+
+.main{
+    display: flex;
+    background-color: #d2d2cf;
+}
+
+#canvasContainer{
+    background-color: #E9ECEF;
+    height: 300px;
+}
+
+.nodeView{
+    width: calc(100% - var(--width));
+    text-align: center;
+    padding: 1% 0 5% 0;
+    border-style: solid;
+    background-color: #d2d2cf;
+    border-color: #d2d2cf;
+}
+
+.container{
+    margin: 10% 0 0 0;
+}
+
+.row{
+    margin: 5% 0 0 0;
+}
+
+label{
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-left: 10%;
+}
+
+input{
+    background-color: white;
+    color: black;
+    border: none;
+    width: 100%;
+}
+
+input[type='checkbox']{
+    width: 10%;
+    height: 70%;
+}
+
+.btndiv{
+    margin: 5% 0 0 0;
+}
+
+.control{
+    position: absolute;
+    background-color: #d2d2cf;
+    width: 10%;
+    top: var(--height);
+    left: 2%;
+}
+
+.control-in{
+    margin: 1% 0 0 5%;
+}
+
+.btn{
+    margin: 0 2% 2% 2%;
+}
+
+.newNodeInput{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top : 25%;
+    opacity: 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.newNodeInput-content{
+    background-color:white;
+    width: 40%;
+}
+
+.newNodeInputLabel{
+    margin: 0;
+}
+
+/* .nodeProp{
+    border-top: solid grey;
+} */
+
+.nodePropContainer{
+    padding: 0 0 10% 0;
+    border-bottom: solid grey;
+    border-top: solid grey;
+}
+
+.nodeEval{
+    margin: 5% 0 5% 0;
+    border-bottom: solid grey;
+}
+
+.nodeGradContainer{
+    margin: 5% 0 0 0;
+}
+
+.nodeEvalContainer{
+    padding: 5% 0 10% 0;
+}
+
+input[id='n1SelectValue']{
+    text-align: end;
+    margin: 0 0 0 5%;
+}
+input[id='n2SelectValue']{
+    text-align: start;
+    margin: 0 5% 0 0;
+}
+input[id='n1SelectValueEdit']{
+    text-align: end;
+    margin: 0 0 0 5%;
+}
+input[id='n2SelectValueEdit']{
+    text-align: start;
+    margin: 0 5% 0 0;
+}
+
+#nodeEditOptions{
+    margin-top: 10%;
+}
+
+.editNodeDiv{
+    position: absolute;
+    width: 50%;
+    top : 60%;
+    right: 20%;
+    opacity: 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.editNodeDiv-content{
+    width: 100%;
+    background-color: white;
+}
