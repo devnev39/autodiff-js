@@ -63,12 +63,12 @@ const PrimaryGrads = {
     },
     9 : (node,index) => {
         if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,Operations.POW(node.operation.n1,2),0.5))))));
+            return CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5))));
         }
     },
     10 : (node,index) => {
         if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(-1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,Operations.POW(node.operation.n1,2),0.5))))));
+            return CompNode.OpNode(Operations.DIV(-1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5))));
         }
     },
     11 : (node,index) => {
