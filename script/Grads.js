@@ -31,8 +31,7 @@ const PrimaryGrads = {
     },
     4 : (node,index) => {
         if(node.operation.n1.const!=null){
-            return new CompNode(null,new Operation(new CompNode(null,new Operation(node.operation.n1,null,-1,Ops.PROD)),
-            new CompNode(null,new Operation(node.operation.n2,null,2,Ops.POW)),null,Ops.DIV));
+            return CompNode.OpNode(Operations.PROD(-1*node.operation.n1.const,CompNode.OpNode(Operations.POW(node.operation.n2,-2))));
         }
         if(node.operation.n2.const!=null){
             return CompNode.OpNode(Operations.DIV(CompNode.ConstNode(1),node.operation.n2));

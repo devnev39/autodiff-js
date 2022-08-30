@@ -371,6 +371,10 @@ $("#evaluateGradbtn").click((ev) => {
     let gradWrt = $("#gradWrtNodeSelect1").prop("value");
     let tracks = [];
     gradWrt = createdNodes.find(node => node.name == gradWrt);
+    if(!gradWrt){
+        alert("Cannot find or set node !");
+        return;
+    }
     if(gradWrt.generation > SELECTED_NODE.generation){
         alert("Cannot calculate grad with generation greater than selected node !");
         return;
@@ -439,7 +443,6 @@ let updateVarSelections = () => Array.from($("[name='varNodeSelect']")).forEach(
     });
     $("#"+ele.id+"Value").val(createdVars.find(node => node.name == $("#"+ele.id).prop("value")).representation());
     $("#"+ele.id).on("change",(ev) => {
-        console.log(ev);
         $("#"+ev.target.id+"Value").val(createdVars.find(node => node.name == $("#"+ev.target.id).prop("value")).representation());
     });
 });
@@ -493,25 +496,20 @@ let x = CompNode.VarNode("x");
 let y = CompNode.VarNode("y");
 
 //EQ1
-let x2 = CompNode.OpNode(Operations.POW(x,2));
-let sin = CompNode.OpNode(Operations.SIN(x));
-let tan = CompNode.OpNode(Operations.TAN(x));
-let x3x2 = CompNode.OpNode(Operations.SUM(CompNode.OpNode(Operations.PROD(3,x)),x2));
-let sinx2 = CompNode.OpNode(Operations.PROD(x2,sin));
-let costanx = CompNode.OpNode(Operations.PROD(CompNode.OpNode(Operations.COS(x)),tan));
-let l21 = CompNode.OpNode(Operations.SUM(x3x2,sinx2));
-let l22 = CompNode.OpNode(Operations.PROD(sinx2,costanx));
-let f = CompNode.OpNode(Operations.SUM(l21,l22));
+// let x2 = CompNode.OpNode(Operations.POW(x,2));
+// let sin = CompNode.OpNode(Operations.SIN(x));
+// let tan = CompNode.OpNode(Operations.TAN(x));
+// let x3x2 = CompNode.OpNode(Operations.SUM(CompNode.OpNode(Operations.PROD(3,x)),x2));
+// let sinx2 = CompNode.OpNode(Operations.PROD(x2,sin));
+// let costanx = CompNode.OpNode(Operations.PROD(CompNode.OpNode(Operations.COS(x)),tan));
+// let l21 = CompNode.OpNode(Operations.SUM(x3x2,sinx2));
+// let l22 = CompNode.OpNode(Operations.PROD(sinx2,costanx));
+// let f = CompNode.OpNode(Operations.SUM(l21,l22));
 
 // EQ2
 // let xy = CompNode.OpNode(Operations.PROD(x,y));
 // let xxy = CompNode.OpNode(Operations.SUM(xy,x));
 // let ans = xxy;
-
-Grad.SetGrad({
-    partialDiff : true,
-    tracks : f.traceVars([])
-});
 
 //EQ3
 // let sin = CompNode.OpNode(Operations.SIN(x));
@@ -520,9 +518,18 @@ Grad.SetGrad({
 // sin = CompNode.OpNode(Operations.SUM(sin,cos));
 // let x4 = CompNode.OpNode(Operations.SUM(x,3));
 
-// let s = "x^2";
-let ans = f;
-// ans = Grad.nthGrad(f,x,1);
+// let s = "x^2"
+
+let sin = CompNode.OpNode(Operations.SIN(x));
+
+Grad.SetGrad({
+    partialDiff : true,
+    tracks : sin.traceVars([])
+});
+
+ans = Grad.nthGrad(sin,sin,1);
+// ans = Grad.nthGrad(ans,x,1);
+
 
 // createdGenerations = ans.getLst({});
 // filterCreatedNodes(mapNodes,createdGenerations);

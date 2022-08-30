@@ -136,6 +136,7 @@ class CompNode{
         let usePoints = "points";
         if(isGradNode){
             usePoints = "gdpoints";
+            content = this.gdname;
         }
         if(options){
             if(options["selected"]){

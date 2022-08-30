@@ -96,13 +96,14 @@ function mapNodes(generations,isGradGraph){
                     x : widht*wind,
                     y : hind*height
                 };    
+                generations[j-1][i-1].gdname = `GEN${j} N${i}`;
             }else{
                 generations[j-1][i-1].points = {
                     x : widht*wind,
                     y : hind*height
                 };
+                generations[j-1][i-1].name = `GEN${j} N${i}`;
             }
-            generations[j-1][i-1].name = `GEN${j} N${i}`;
             nodes.push(generations[j-1][i-1]);
         }
     }

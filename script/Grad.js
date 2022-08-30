@@ -20,13 +20,16 @@ class Grad{
         if(start.const != undefined || start.const != null){
             return CompNode.ConstNode(0);
         }
+        if(start == relative){
+            return CompNode.ConstNode(1);
+        }
         if(start.var_name){
             if(start == relative){
                 return CompNode.ConstNode(1);
             }
             if(start != relative){
                 if(Grad.partialDiff){
-                    if(Grad.tracks.length > 1){
+                    if(Grad.tracks.length >= 1){
                         return CompNode.VarNode(start.var_name+"'");
                     }else{
                         throw new Error("Cannot find tracks !");
