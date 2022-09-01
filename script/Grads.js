@@ -36,39 +36,25 @@ const PrimaryGrads = {
         return node.operation.n1 ? CompNode.OpNode(Operations.COS(node.operation.n1)) : null;
     },
     7 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.PROD(-1,CompNode.OpNode(Operations.SIN(node.operation.n1))));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.PROD(-1,CompNode.OpNode(Operations.SIN(node.operation.n1)))) : null;
     },
     8 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.COS(node.operation.n1)),2))));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.COS(node.operation.n1)),2)))) : null;
     },
     9 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5))));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5)))) : null;
     },
     10 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(-1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5))));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.DIV(-1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.SUB(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))),0.5)))) : null;
     },
     11 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.SUM(1,CompNode.OpNode(Operations.POW(node.operation.n1,2))))));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.SUM(1,CompNode.OpNode(Operations.POW(node.operation.n1,2)))))) : null;
     },
     12 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.COSH(node.operation.n1));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.COSH(node.operation.n1)) : null;
     },
     13 : (node,index) => {
-        if(node.operation.n1){
-            return CompNode.OpNode(Operations.SINH(node.operation.n1));
-        }
+        return node.operation.n1 ? CompNode.OpNode(Operations.SINH(node.operation.n1)) : null;
     },
     14 : (node,index) => {
         return node.operation.n1 ? CompNode.OpNode(Operations.DIV(1,CompNode.OpNode(Operations.POW(CompNode.OpNode(Operations.COSH(node.operation.n1)),2)))) : null;
