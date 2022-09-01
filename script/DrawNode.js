@@ -2,27 +2,22 @@ function drawNodes(nodeList){
     let noFocus = true;
     for(let node of nodeList){
         let usePoints = "points";
-        if(node.gdpoints){
+        if(showGradGraph){
             usePoints = "gdpoints";
         }
         if(dist(node[usePoints].x,node[usePoints].y,mouseX,mouseY) <= NODE_RADI){
-            if(showGradGraph){
-                node.drawNode({color : 9},true);
-            }else{
-                node.drawNode({color : 9});
-            }
+            node.drawNode({color : 9});
             node.populateDiv({name : "#nodeName",gen : "#nodeGen",rep : "#nodeRep",op : "#nodeOp"});
             noFocus = false;
         }else{
-            if(showGradGraph){
-                node.drawNode(null,true);
-            }else{
-                node.drawNode();
-            }
+            node.drawNode();
         }
     }
-    if(SELECTED_NODE){
-        if(noFocus){
+    if(noFocus){
+        if(showGradGraph && SELECTED_GRAD_NODE){
+            SELECTED_GRAD_NODE.populateDiv({name : "#nodeName",gen : "#nodeGen",rep : "#nodeRep",op : "#nodeOp"});
+        }else
+        if(!showGradGraph && SELECTED_NODE){
             SELECTED_NODE.populateDiv({name : "#nodeName",gen : "#nodeGen",rep : "#nodeRep",op : "#nodeOp"});
         }
     }
@@ -42,24 +37,46 @@ function checkClickState(nodes){
     if(nodes == null){
         throw new Error("nodes array null !");
     }
+    let usePoints = "points";
+    if(showGradGraph){
+        usePoints = "gdpoints";
+    }
     for(let node of nodes){
-        if(dist(node.points.x,node.points.y,mouseX,mouseY) <= NODE_RADI){
-            if(SELECTED_NODE){
+        if(dist(node[usePoints].x,node[usePoints].y,mouseX,mouseY) <= NODE_RADI){
+            if(SELECTED_NODE && !showGradGraph){
                 if(SELECTED_NODE == node){
                     SELECTED_NODE.selected = false;
                     SELECTED_NODE = null;
-                    node.drawNode({selected : false, color : 9});
                     $("#nodeEditOptions").attr("hidden",true);
+                    node.drawNode({selected : false, color : 9});
                 }else{
                     SELECTED_NODE.selected = false;
                     SELECTED_NODE = node;
+                    $("#nodeEditOptions").attr("hidden",false);
                     node.drawNode({selected : true, color : 8});
+                }
+            }else
+            if(SELECTED_GRAD_NODE && showGradGraph){
+                if(SELECTED_GRAD_NODE == node){
+                    SELECTED_GRAD_NODE.selected = false;
+                    SELECTED_GRAD_NODE = null;
+                    node.drawNode({selected : false, color : 9});
+                }else{
+                    SELECTED_GRAD_NODE.selected = false;
+                    SELECTED_GRAD_NODE = node;
+                    node.drawNode({selected : true, color : 8});
+                }
+                $("#nodeEditOptions").attr("hidden",true);
+            }
+            else{
+                if(showGradGraph){
+                    SELECTED_GRAD_NODE = node;
+                    $("#nodeEditOptions").attr("hidden",true);
+                }else{
+                    SELECTED_NODE = node;
                     $("#nodeEditOptions").attr("hidden",false);
                 }
-            }else{
-                SELECTED_NODE = node;
                 node.drawNode({selected : true, color : 8});
-                $("#nodeEditOptions").attr("hidden",false);
             }
         }
     }

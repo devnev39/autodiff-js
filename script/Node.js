@@ -131,10 +131,10 @@ class CompNode{
         }
     }
 
-    drawNode(options,isGradNode){
+    drawNode(options){
         let content = this.name;
         let usePoints = "points";
-        if(isGradNode){
+        if(showGradGraph){
             usePoints = "gdpoints";
             content = this.gdname;
         }
@@ -178,10 +178,14 @@ class CompNode{
         if(!options){
             throw new Error("No options received !");
         }
+        let useName = "name";
+        if(showGradGraph){
+            useName = "gdname";
+        }
         for(let key of Object.keys(options)){
             switch (key) {
                 case "name":
-                    $(options[key]).attr("value",this.name);
+                    $(options[key]).attr("value",this[useName]);
                     break;
                 
                 case "gen":
@@ -196,10 +200,10 @@ class CompNode{
                     let val = 0;
                     if(this.operation){
                         if(this.operation.n1 && this.operation.n2){
-                            val = this.operation.n1.name + Rep[this.operation.op] + this.operation.n2.name;
+                            val = this.operation.n1[useName] + Rep[this.operation.op] + this.operation.n2[useName];
                         }else
                         if(this.operation.n1){
-                            val = Rep[this.operation.op]+"("+this.operation.n1.name+")";
+                            val = Rep[this.operation.op]+"("+this.operation.n1[useName]+")";
                         }
                     }else{
                         val = "None";

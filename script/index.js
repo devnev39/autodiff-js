@@ -3,6 +3,7 @@ const CANVAS_WIDTH = 1000;
 const TEXT_SIZE = 12;
 const ALIGN_FRACTION = 0.8;
 let SELECTED_NODE = null;
+let SELECTED_GRAD_NODE = null;
 
 let showGradGraph = false;
 
@@ -331,11 +332,11 @@ $("#updateNodebtn").click((ev) => {
 });
 
 $("#evalNodebtn").click((ev) => {
-    if(SELECTED_NODE == null){
+    if(!SELECTED_NODE && !SELECTED_GRAD_NODE){  
         alert("No node selected !");
         return;
     }
-    let tracks = SELECTED_NODE.traceVars([]);
+    let tracks = showGradGraph ? SELECTED_GRAD_NODE.traceVars([]) : SELECTED_NODE.traceVars([]);
     let opt = {};
     alert(`${tracks.length} tracks found !`);
     for(let track of tracks){
@@ -350,7 +351,7 @@ $("#evalNodebtn").click((ev) => {
         }
         opt[track.var_name] = +res;
     }
-    let ans = SELECTED_NODE.evaluate(opt);
+    let ans = showGradGraph ? SELECTED_GRAD_NODE.evaluate(opt) :SELECTED_NODE.evaluate(opt);
     $("#evalNodeValue").val(ans);
 });
 
@@ -363,28 +364,34 @@ $("#partialDiffCheckbox").on("change",(ev) => {
 });
 
 $("#evaluateGradbtn").click((ev) => {
-    if(!SELECTED_NODE){
+    if(!SELECTED_NODE && !SELECTED_GRAD_NODE){
         alert("No node selected !");
         return;
     }
     let partialDiff = $("#partialDiffCheckbox").prop("checked");
     let gradWrt = $("#gradWrtNodeSelect1").prop("value");
     let tracks = [];
-    gradWrt = createdNodes.find(node => node.name == gradWrt);
+    gradWrt = showGradGraph ? gradNodes.find(node => node.name == gradWrt) : createdNodes.find(node => node.name == gradWrt);
     if(!gradWrt){
         alert("Cannot find or set node !");
         return;
+    }
+    if(showGradGraph){
+        if(gradWrt.generation > SELECTED_GRAD_NODE){
+            alert("Cannot calculate grad with generation greater than selected node !");
+            return;
+        }
     }
     if(gradWrt.generation > SELECTED_NODE.generation){
         alert("Cannot calculate grad with generation greater than selected node !");
         return;
     }
     if(partialDiff){
-        tracks = SELECTED_NODE.traceVars([]);
+        tracks = showGradGraph ? SELECTED_GRAD_NODE.traceVars([]) : SELECTED_NODE.traceVars([]);
     }
     if(!partialDiff){
         let var_node = $("#partialGradVarNodeSelect").prop("value");
-        var_node = createdNodes.find(node => node.name == var_node);
+        var_node = showGradGraph ? gradNodes.find(node => node.name == var_node) : createdNodes.find(node => node.name == var_node);
         if(!var_node.var_name){
             alert("Varnode not found !");
             return;
@@ -400,15 +407,10 @@ $("#evaluateGradbtn").click((ev) => {
         alert("Cannot set gradIndex !");
         return;
     }
-    let grad = Grad.nthGrad(SELECTED_NODE,gradWrt,gradIndex);
+    let grad = showGradGraph ? Grad.nthGrad(SELECTED_GRAD_NODE,gradWrt,gradIndex) : Grad.nthGrad(SELECTED_NODE,gradWrt,gradIndex);
     gradNodesGenerations = grad.getLst({});
-    // filterGradNodeGenerations();
     mapNodes(gradNodesGenerations,true);
-    if($("#nodeGradView").prop("checked")){
-        showGradGraph = true;
-    }else{
-        showGradGraph = false;
-    }
+    showGradGraph = $("#nodeGradView").prop("checked") ? true : false;
     $("#gradEvalValue").prop("value",grad.representation());
 });
 
@@ -426,6 +428,7 @@ $("#nodeGradView").on("change",(ev) => {
     }else{
         if(showGradGraph){
             showGradGraph = false;
+            SELECTED_NODE.populateDiv({name : "#nodeName",gen : "#nodeGen",rep : "#nodeRep",op : "#nodeOp"});
         }
     }
 });
@@ -520,14 +523,14 @@ let y = CompNode.VarNode("y");
 
 // let s = "x^2"
 
-let sin = CompNode.OpNode(Operations.SIN(x));
+let sin = CompNode.OpNode(Operations.DIV(x,y));
 
 Grad.SetGrad({
     partialDiff : true,
     tracks : sin.traceVars([])
 });
 
-ans = Grad.nthGrad(sin,sin,1);
+ans = Grad.nthGrad(sin,x,1);
 // ans = Grad.nthGrad(ans,x,1);
 
 
@@ -547,7 +550,6 @@ function draw(){
     }else{
         drawNodes(createdNodes);
     }
-    
 }
 
 function mouseClicked(){
@@ -556,5 +558,4 @@ function mouseClicked(){
     }else{
         checkClickState(createdNodes);
     }
-    
 }
