@@ -31,6 +31,8 @@ const PrimaryGrads = {
         if(node.operation.n2.const!=null){
             return CompNode.OpNode(Operations.PROD(node.operation.n2,CompNode.OpNode(Operations.POW(node.operation.n1,node.operation.n2.const-1))));
         }
+        if(index) return CompNode.OpNode(Operations.PROD(node,CompNode.OpNode(Operations.SUM(CompNode.OpNode(Operations.DIV(node.operation.n2,node.operation.n1),CompNode.OpNode(Operations.PROD(CompNode.OpNode(Operations.LOG(node.operation.n1)),Grad.GradWrtNode(node.operation.n2,node.operation.n1))))))));
+        return CompNode.OpNode(Operations.PROD(node,CompNode.OpNode(Operations.SUM(CompNode.OpNode(Operations.LOG(node.operation.n1)),CompNode.OpNode(Operations.PROD(CompNode.OpNode(Operations.DIV(node.operation.n2,node.operation.n1)),Grad.GradWrtNode(node.operation.n1,node.operation.n2)))))));
     },
     6 : (node,index) => {
         return node.operation.n1 ? CompNode.OpNode(Operations.COS(node.operation.n1)) : null;
